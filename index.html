@@ -7,934 +7,502 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0d0f0e;
-    --surface: #141714;
-    --card: #191c19;
-    --border: #2a2f2a;
-    --gold: #c9a84c;
-    --gold-light: #e2c47a;
-    --gold-dim: #7a6228;
-    --green: #3d6b47;
-    --green-light: #5a9468;
-    --text: #e8ebe6;
-    --muted: #7a8278;
-    --tag-scalp: #3b2a1a;
-    --tag-scalp-text: #e0a060;
-    --tag-repair: #1a2830;
-    --tag-repair-text: #60b8e0;
-    --tag-moisture: #1e2b1e;
-    --tag-moisture-text: #70c87a;
-    --tag-clarify: #2a1a30;
-    --tag-clarify-text: #b078e0;
+    --bg:           #0d0f0e;
+    --card:         #191c19;
+    --border:       #252925;
+    --gold:         #c9a84c;
+    --gold-light:   #e2c47a;
+    --gold-dim:     #6a5222;
+    --green-light:  #5a9468;
+    --text:         #e8ebe6;
+    --muted:        #6a726a;
+    --img-bg:       #f4f2ed;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; min-height: 100vh; overflow-x: hidden; }
+
+  /* grain overlay */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: .5;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* GRAIN OVERLAY */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
-    opacity: 0.4;
-  }
-
-  .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
-
-  /* HEADER */
-  header {
-    padding: 64px 0 48px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 56px;
-  }
-
-  .header-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-
-  header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(48px, 8vw, 88px);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 20px;
-  }
-
-  header h1 em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .header-sub {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    max-width: 540px;
-    line-height: 1.8;
-  }
-
-  .header-pills {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-top: 24px;
-  }
-
-  .pill {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 2px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-
-  .pill.active { border-color: var(--gold-dim); color: var(--gold); background: #1d180a; }
-
-  /* SECTION LABELS */
-  .section-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-    display: flex; align-items: center; gap: 12px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* SCALP ALERT BANNER */
-  .scalp-alert {
-    background: linear-gradient(135deg, #1a1200 0%, #0f1a12 100%);
-    border: 1px solid var(--gold-dim);
-    border-left: 3px solid var(--gold);
-    padding: 24px 28px;
-    margin-bottom: 56px;
-    border-radius: 2px;
-  }
-
-  .scalp-alert h3 {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold-light);
-    margin-bottom: 10px;
-  }
-
-  .scalp-alert p {
-    font-size: 12px;
-    line-height: 1.9;
-    color: #b0b8a8;
-  }
-
-  .scalp-alert strong { color: var(--text); }
-
-  /* PRODUCT GRID */
-  .products-section { margin-bottom: 72px; }
-
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2px;
-  }
-
-  .product-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 28px;
-    position: relative;
-    transition: border-color 0.2s, transform 0.2s;
-    animation: fadeUp 0.5s ease both;
-  }
-
-  .product-card:hover {
-    border-color: var(--gold-dim);
-    transform: translateY(-2px);
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .product-card:nth-child(1) { animation-delay: 0.05s; }
-  .product-card:nth-child(2) { animation-delay: 0.10s; }
-  .product-card:nth-child(3) { animation-delay: 0.15s; }
-  .product-card:nth-child(4) { animation-delay: 0.20s; }
-  .product-card:nth-child(5) { animation-delay: 0.25s; }
-  .product-card:nth-child(6) { animation-delay: 0.30s; }
-  .product-card:nth-child(7) { animation-delay: 0.35s; }
-  .product-card:nth-child(8) { animation-delay: 0.40s; }
-  .product-card:nth-child(9) { animation-delay: 0.45s; }
-
-  .card-priority {
-    position: absolute; top: 16px; right: 16px;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    background: var(--gold-dim);
-    color: var(--gold-light);
-    border-radius: 1px;
-  }
-
-  .card-priority.must { background: #3d1a00; color: #ff9944; }
-  .card-priority.optional { background: #1a2230; color: #6699cc; }
-
-  .product-img-wrap {
-    width: 100%;
-    height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    background: #111311;
-    border-radius: 1px;
-    overflow: hidden;
-  }
-
-  .product-img-wrap img {
-    max-height: 160px;
-    max-width: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
-    transition: transform 0.3s;
-  }
-
-  .product-card:hover .product-img-wrap img {
-    transform: scale(1.04);
-  }
-
-  .product-tag {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 1px;
-    margin-bottom: 10px;
-  }
-
-  .tag-scalp   { background: var(--tag-scalp);   color: var(--tag-scalp-text); }
-  .tag-repair  { background: var(--tag-repair);   color: var(--tag-repair-text); }
-  .tag-moisture{ background: var(--tag-moisture); color: var(--tag-moisture-text); }
-  .tag-clarify { background: var(--tag-clarify);  color: var(--tag-clarify-text); }
-
-  .product-name {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.3;
-    margin-bottom: 6px;
-  }
-
-  .product-brand {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-
-  .product-why {
-    font-size: 11px;
-    line-height: 1.8;
-    color: #9aa098;
-    margin-bottom: 18px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .usage-list { list-style: none; }
-
-  .usage-list li {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    font-size: 11px;
-    line-height: 1.7;
-    color: #c8cec6;
-    padding: 5px 0;
-    border-bottom: 1px dashed #1e221e;
-  }
-
-  .usage-list li:last-child { border-bottom: none; }
-
-  .usage-icon {
-    font-size: 13px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .usage-label {
-    color: var(--gold);
-    font-weight: 500;
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    display: block;
-  }
-
-  /* ROUTINE SECTION */
-  .routine-section { margin-bottom: 72px; }
-
-  .routine-block {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 32px;
-    margin-bottom: 2px;
-  }
-
-  .routine-block h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
-    font-weight: 400;
-    font-style: italic;
-    color: var(--gold-light);
-    margin-bottom: 6px;
-  }
-
-  .routine-subtitle {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .steps-list { list-style: none; counter-reset: steps; }
-
-  .steps-list li {
-    counter-increment: steps;
-    display: grid;
-    grid-template-columns: 28px 1fr;
-    gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px dashed var(--border);
-    font-size: 12px;
-    line-height: 1.7;
-    color: #c0c8be;
-    align-items: start;
-  }
-
-  .steps-list li:last-child { border-bottom: none; }
-
-  .steps-list li::before {
-    content: counter(steps, decimal-leading-zero);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--gold-dim);
-    padding-top: 3px;
-  }
-
-  .steps-list strong { color: var(--text); }
-  .steps-list em { color: var(--muted); font-style: normal; }
-
-  /* SCHEDULE TABLE */
-  .schedule-section { margin-bottom: 72px; }
-
-  .schedule-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-  }
-
-  @media (max-width: 600px) {
-    .schedule-grid { grid-template-columns: 1fr; }
-    .products-grid { grid-template-columns: 1fr; }
-    header h1 { font-size: 48px; }
-  }
-
-  .schedule-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 24px;
-  }
-
-  .schedule-freq {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--green-light);
-    margin-bottom: 12px;
-  }
-
-  .schedule-items { list-style: none; }
-
-  .schedule-items li {
-    font-size: 11px;
-    line-height: 1.8;
-    color: #a8b0a6;
-    padding: 4px 0;
-    display: flex; gap: 8px; align-items: flex-start;
-  }
-
-  .schedule-items li::before {
-    content: '—';
-    color: var(--gold-dim);
-    flex-shrink: 0;
-  }
-
-  /* RULES SECTION */
-  .rules-section { margin-bottom: 72px; }
-
-  .rules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 2px;
-  }
-
-  .rule-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 22px;
-  }
-
-  .rule-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 40px;
-    font-weight: 300;
-    color: #2a2f2a;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .rule-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  .rule-body {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding-top: 32px;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  /* TABS */
-  .tab-bar {
-    display: flex; gap: 0;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .tab-btn {
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    padding: 10px 18px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s;
-    margin-bottom: -1px;
-  }
-
-  .tab-btn.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
-  }
-
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* NAV */
   nav {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(13,15,14,0.92);
-    backdrop-filter: blur(12px);
+    background: rgba(13,15,14,.94); backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    display: flex; align-items: center; gap: 24px;
-    height: 48px;
+    display: flex; align-items: center; padding: 0 32px; height: 50px; gap: 20px;
   }
-
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    font-style: italic;
-    color: var(--gold);
-    white-space: nowrap;
-  }
-
-  .nav-links { display: flex; gap: 0; margin-left: auto; }
-
-  .nav-link {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 0 14px;
-    height: 48px;
-    display: flex; align-items: center;
-    border-right: 1px solid var(--border);
-    transition: color 0.2s;
-  }
-
-  .nav-link:first-child { border-left: 1px solid var(--border); }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--gold); margin-right: auto; }
+  .nav-link { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 0 14px; height: 50px; display: flex; align-items: center; border-left: 1px solid var(--border); transition: color .2s; }
   .nav-link:hover { color: var(--gold); }
+
+  .wrapper { max-width: 1120px; margin: 0 auto; padding: 0 28px 100px; }
+
+  header { padding: 68px 0 52px; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
+  .eyebrow { font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  header h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 9vw, 92px); font-weight: 300; line-height: .93; letter-spacing: -.02em; margin-bottom: 22px; }
+  header h1 em { font-style: italic; color: var(--gold-light); }
+  .header-sub { font-size: 11px; color: var(--muted); letter-spacing: .08em; line-height: 1.9; max-width: 520px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .pill { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); }
+  .pill.on { border-color: var(--gold-dim); color: var(--gold); background: #1a1408; }
+
+  .sec-label { font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .38em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; display: flex; align-items: center; gap: 14px; }
+  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .alert { background: linear-gradient(130deg, #1a1300 0%, #0e1a12 100%); border: 1px solid var(--gold-dim); border-left: 3px solid var(--gold); padding: 26px 30px; margin-bottom: 60px; border-radius: 2px; }
+  .alert h3 { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 10px; }
+  .alert p { font-size: 11px; line-height: 1.95; color: #a8b0a0; }
+  .alert strong { color: var(--text); }
+
+  .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+  .tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; margin-bottom: -1px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); cursor: pointer; transition: color .18s, border-color .18s; }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 2px; }
+
+  .card { background: var(--card); border: 1px solid var(--border); padding: 26px; position: relative; transition: border-color .22s, transform .22s; animation: rise .5s ease both; }
+  .card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .card:nth-child(1){animation-delay:.04s} .card:nth-child(2){animation-delay:.08s}
+  .card:nth-child(3){animation-delay:.12s} .card:nth-child(4){animation-delay:.16s}
+  .card:nth-child(5){animation-delay:.20s} .card:nth-child(6){animation-delay:.24s}
+  .card:nth-child(7){animation-delay:.28s} .card:nth-child(8){animation-delay:.32s}
+  .card:nth-child(9){animation-delay:.36s} .card:nth-child(10){animation-delay:.40s}
+
+  .badge { position: absolute; top: 14px; right: 14px; font-size: 8px; letter-spacing: .18em; text-transform: uppercase; padding: 3px 8px; border-radius: 1px; }
+  .badge-must { background: #3a1800; color: #ff9938; }
+  .badge-core { background: #1c1c10; color: var(--gold); }
+
+  .img-box { width: 100%; height: 190px; background: var(--img-bg); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border-radius: 2px; overflow: hidden; }
+  .img-box img { max-height: 170px; max-width: 90%; object-fit: contain; transition: transform .3s; }
+  .card:hover .img-box img { transform: scale(1.05); }
+
+  .tag { display: inline-block; font-size: 8px; letter-spacing: .18em; text-transform: uppercase; padding: 3px 8px; border-radius: 1px; margin-bottom: 10px; }
+  .tag-scalp    { background: #2e1a0e; color: #e8a050; }
+  .tag-repair   { background: #0e1e28; color: #55aad8; }
+  .tag-moisture { background: #122012; color: #60c070; }
+  .tag-clarify  { background: #200e2c; color: #a868d8; }
+
+  .card-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+  .card-brand { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .card-why { font-size: 11px; line-height: 1.85; color: #909890; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+
+  .usage { list-style: none; }
+  .usage li { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-bottom: 1px dashed #1d201d; font-size: 10.5px; line-height: 1.75; color: #b8c0b6; }
+  .usage li:last-child { border-bottom: none; }
+  .usage-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+  .usage-lbl { display: block; font-size: 8.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1px; }
+
+  /* ── ROUTINE — FIXED LAYOUT ── */
+  .routine-block { background: var(--card); border: 1px solid var(--border); padding: 34px; margin-bottom: 2px; }
+  .routine-block h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; font-style: italic; color: var(--gold-light); margin-bottom: 4px; }
+  .routine-sub { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; }
+
+  .steps { list-style: none; }
+  .steps li {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .steps li:last-child { border-bottom: none; }
+
+  .step-num {
+    flex: 0 0 28px;
+    font-size: 10px;
+    color: var(--gold-dim);
+    font-weight: 500;
+    padding-top: 2px;
+    line-height: 1;
+  }
+  .step-body { flex: 1; font-size: 11.5px; line-height: 1.75; color: #c0c8be; }
+  .step-body strong { color: var(--text); }
+  .step-body em { color: var(--muted); font-style: normal; }
+
+  /* ── SCHEDULE ── */
+  .sched-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .sched-card { background: var(--card); border: 1px solid var(--border); padding: 24px; }
+  .sched-freq { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--green-light); margin-bottom: 14px; }
+  .sched-items { list-style: none; }
+  .sched-items li { font-size: 11px; line-height: 1.85; color: #9aa098; padding: 4px 0; display: flex; gap: 10px; align-items: flex-start; }
+  .sched-items li::before { content: '–'; color: var(--gold-dim); flex-shrink: 0; }
+
+  /* ── RULES ── */
+  .rules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2px; }
+  .rule-card { background: var(--card); border: 1px solid var(--border); padding: 24px; }
+  .rule-n { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 300; color: #232823; line-height: 1; margin-bottom: 10px; }
+  .rule-title { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .rule-body { font-size: 11px; color: var(--muted); line-height: 1.85; }
+
+  footer { border-top: 1px solid var(--border); padding-top: 30px; font-size: 9px; color: var(--muted); letter-spacing: .1em; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 640px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .sched-grid   { grid-template-columns: 1fr; }
+    header h1     { font-size: 52px; }
+    nav { padding: 0 16px; }
+    .wrapper { padding: 0 16px 80px; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <span class="nav-logo">Regimen</span>
-  <div class="nav-links">
-    <a class="nav-link" href="#products">Products</a>
-    <a class="nav-link" href="#routine">Routine</a>
-    <a class="nav-link" href="#schedule">Schedule</a>
-    <a class="nav-link" href="#rules">Rules</a>
-  </div>
+  <a class="nav-link" href="#products">Products</a>
+  <a class="nav-link" href="#routine">Routine</a>
+  <a class="nav-link" href="#schedule">Schedule</a>
+  <a class="nav-link" href="#rules">Rules</a>
 </nav>
 
 <div class="wrapper">
 
   <header>
-    <div class="header-eyebrow">Personalized Hair Care Reference</div>
-    <h1>My<br/><em>Hair</em><br/>Regimen</h1>
-    <p class="header-sub">Type 4A / 4B · Seborrheic Dermatitis · Protective Styling · Length Retention via Spam Twists</p>
-    <div class="header-pills">
-      <span class="pill active">Scalp-First</span>
-      <span class="pill active">Science-Backed</span>
+    <div class="eyebrow">Personalized Hair Care Reference</div>
+    <h1>My<br><em>Hair</em><br>Regimen</h1>
+    <p class="header-sub">Type 4A / 4B · Seborrheic Dermatitis · Spam Twists · Length Retention</p>
+    <div class="pills">
+      <span class="pill on">Scalp-First</span>
+      <span class="pill on">Science-Backed</span>
       <span class="pill">Spam Twists</span>
-      <span class="pill">Heat Occasional</span>
+      <span class="pill">Occasional Heat</span>
       <span class="pill">Length Retention</span>
     </div>
   </header>
 
-  <div class="scalp-alert">
+  <div class="alert">
     <h3>⚠ Scalp Context — Read First</h3>
     <p>
-      Your primary condition is likely <strong>seborrheic dermatitis</strong> — flaking + excess oil is the classic marker. 
-      The scabs at the nape that burn when picked indicate secondary <strong>folliculitis</strong>, triggered when sebum and buildup clog follicles over long periods without washing. 
-      The <strong>forehead bumps</strong> are most likely <strong>Malassezia folliculitis</strong> (fungal acne) migrating from the hairline via oil. 
-      Treating the scalp consistently is the single highest-impact action — healthy hair growth follows scalp health, not the reverse.
+      Your primary condition is likely <strong>seborrheic dermatitis</strong> — the oily flaking combo is its classic signature.
+      The nape scabs that burned when picked indicate secondary <strong>folliculitis</strong>, triggered by sebum clogging follicles over long no-wash stretches.
+      The <strong>forehead bumps</strong> are most likely <strong>Malassezia folliculitis</strong> migrating from your hairline via oil.
+      Treating the scalp consistently is the single highest-impact action — hair growth follows scalp health, not the reverse.
     </p>
   </div>
 
-  <!-- PRODUCTS -->
-  <section id="products" class="products-section">
-    <div class="section-label">Products</div>
-
+  <section id="products" style="margin-bottom:72px;">
+    <div class="sec-label">Products</div>
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="switchTab(event, 'all')">All</button>
-      <button class="tab-btn" onclick="switchTab(event, 'scalp')">Scalp</button>
-      <button class="tab-btn" onclick="switchTab(event, 'repair')">Repair</button>
-      <button class="tab-btn" onclick="switchTab(event, 'moisture')">Moisture</button>
-      <button class="tab-btn" onclick="switchTab(event, 'clarify')">Clarify</button>
+      <button class="tab-btn active" data-tab="all">All</button>
+      <button class="tab-btn" data-tab="scalp">Scalp</button>
+      <button class="tab-btn" data-tab="repair">Repair</button>
+      <button class="tab-btn" data-tab="moisture">Moisture</button>
+      <button class="tab-btn" data-tab="clarify">Clarify</button>
     </div>
-
-    <div id="tab-all" class="tab-content active">
-      <div class="products-grid" id="products-grid"></div>
-    </div>
-    <div id="tab-scalp" class="tab-content">
-      <div class="products-grid" id="products-grid-scalp"></div>
-    </div>
-    <div id="tab-repair" class="tab-content">
-      <div class="products-grid" id="products-grid-repair"></div>
-    </div>
-    <div id="tab-moisture" class="tab-content">
-      <div class="products-grid" id="products-grid-moisture"></div>
-    </div>
-    <div id="tab-clarify" class="tab-content">
-      <div class="products-grid" id="products-grid-clarify"></div>
-    </div>
+    <div id="tab-all"      class="tab-pane active"><div class="product-grid" id="grid-all"></div></div>
+    <div id="tab-scalp"    class="tab-pane"><div class="product-grid" id="grid-scalp"></div></div>
+    <div id="tab-repair"   class="tab-pane"><div class="product-grid" id="grid-repair"></div></div>
+    <div id="tab-moisture" class="tab-pane"><div class="product-grid" id="grid-moisture"></div></div>
+    <div id="tab-clarify"  class="tab-pane"><div class="product-grid" id="grid-clarify"></div></div>
   </section>
 
-  <!-- ROUTINE -->
-  <section id="routine" class="routine-section">
-    <div class="section-label">Wash Day Routine</div>
+  <section id="routine" style="margin-bottom:72px;">
+    <div class="sec-label">Wash Day Routine</div>
 
     <div class="routine-block">
       <h3>Pre-Twist Install Wash Day</h3>
-      <div class="routine-subtitle">Full reset before each new install</div>
-      <ol class="steps-list">
-        <li><strong>Pre-poo</strong> — Apply lightweight oil (coconut or olive) to <em>dry</em> hair, 20–30 min before washing. Protects against hygral fatigue.</li>
-        <li><strong>Cécred Clarifying Scrub</strong> — Remove all product buildup. Only do this before a fresh install, not every wash.</li>
-        <li><strong>Nizoral Shampoo</strong> — Apply to scalp, leave 3–5 minutes, then rinse. This is your antifungal treatment step.</li>
-        <li><strong>Cécred Hydrating Shampoo</strong> — Follow-up wash to re-moisturize after Nizoral (which can be drying on its own).</li>
-        <li><strong>Cécred Reconstructing Mask</strong> — Deep condition 20–30 min under a heat cap. Handles protein replenishment.</li>
-        <li><strong>Cécred Conditioner</strong> — Rinse-out conditioner to seal and soften after the mask.</li>
-        <li><strong>K18 Leave-In Mask</strong> — Apply to damp sections. Do <em>not</em> rinse. Small amount per section.</li>
-        <li><strong>Leave-In Conditioner + K18 Oil</strong> — Apply leave-in, then K18 Oil as heat protectant before any blow-drying.</li>
-        <li><strong>Blow Dry</strong> — Low to medium heat only. Stretches shrinkage for length visibility and easier installation.</li>
-        <li><strong>JBCO on ends</strong> — Seal ends and mid-lengths. Apply to edges sparingly. Install twists.</li>
+      <div class="routine-sub">Full reset before each new install — every 4–6 weeks</div>
+      <ol class="steps">
+        <li><span class="step-num">01</span><span class="step-body"><strong>Pre-poo</strong> — Apply lightweight oil (coconut or olive) to <em>dry</em> hair 20–30 min before washing. Prevents hygral fatigue during the wash.</span></li>
+        <li><span class="step-num">02</span><span class="step-body"><strong>Cécred Clarifying Scrub</strong> — Massage into scalp and work through hair. Removes all silicone and product buildup before a fresh install.</span></li>
+        <li><span class="step-num">03</span><span class="step-body"><strong>Nizoral Shampoo</strong> — Apply directly to scalp, leave <em>3–5 minutes</em>, then rinse. This is your antifungal treatment step. Do not skip.</span></li>
+        <li><span class="step-num">04</span><span class="step-body"><strong>Cécred Hydrating Shampoo</strong> — Follow-up wash to re-moisturize. Nizoral can be drying on its own — this step is always needed after it.</span></li>
+        <li><span class="step-num">05</span><span class="step-body"><strong>Cécred Reconstructing Mask</strong> — Apply to wet sections, cover with a heat cap, leave <em>20–30 minutes</em>. Protein treatment step. Do not skip on install days.</span></li>
+        <li><span class="step-num">06</span><span class="step-body"><strong>Cécred Conditioner</strong> — Rinse-out after the Mask. Hair will feel stiff from the protein treatment — this restores softness and moisture balance.</span></li>
+        <li><span class="step-num">07</span><span class="step-body"><strong>K18 Leave-In Mask</strong> — Apply dime-sized amounts to damp sections. <em>Do not rinse.</em> Apply before any heat product.</span></li>
+        <li><span class="step-num">08</span><span class="step-body"><strong>K18 Oil</strong> — Apply evenly through hair before blow-drying. Thermal protection. Use low-to-medium heat only to stretch shrinkage for installation.</span></li>
+        <li><span class="step-num">09</span><span class="step-body"><strong>JBCO on ends</strong> — Seal ends and mid-lengths. Keep off your scalp if SD is active — heavy oils feed Malassezia on an irritated scalp.</span></li>
+        <li><span class="step-num">10</span><span class="step-body"><strong>Install spam twists</strong> — Low tension at the roots. If your scalp hurts after 24 hours, they are too tight. Take them down and redo looser.</span></li>
       </ol>
     </div>
 
     <div class="routine-block">
       <h3>Bi-Weekly In-Twist Wash</h3>
-      <div class="routine-subtitle">While protective style is in — every 2 weeks</div>
-      <ol class="steps-list">
-        <li><strong>Nizoral Shampoo</strong> — Focus entirely on scalp. Do not skip this — Malassezia builds up even between installs.</li>
-        <li><strong>Cécred Hydrating Shampoo</strong> — Follow-up, diluted is fine. Focus on twists and ends.</li>
-        <li><strong>Cécred Conditioner</strong> — Focus on ends, leave on 5 min, rinse.</li>
-        <li><strong>Air dry or diffuse</strong> — No direct heat unless reinstalling after this wash.</li>
+      <div class="routine-sub">While protective style is in — every 2 weeks minimum, no exceptions</div>
+      <ol class="steps">
+        <li><span class="step-num">01</span><span class="step-body"><strong>Nizoral Shampoo</strong> — Focus entirely on scalp. Leave 3–5 minutes, rinse. Malassezia rebuilds even when no visible symptoms are present.</span></li>
+        <li><span class="step-num">02</span><span class="step-body"><strong>Cécred Hydrating Shampoo</strong> — Diluted is fine. Focus on twists and ends. Always follow Nizoral with this.</span></li>
+        <li><span class="step-num">03</span><span class="step-body"><strong>Cécred Conditioner</strong> — Focus on ends. Leave 5 minutes, rinse. Save the Reconstructing Mask for install days only.</span></li>
+        <li><span class="step-num">04</span><span class="step-body"><strong>Air dry or diffuse on low</strong> — No heat unless taking twists down after this wash. Hair <em>must</em> be fully dry before sleeping.</span></li>
       </ol>
     </div>
   </section>
 
-  <!-- SCHEDULE -->
-  <section id="schedule" class="schedule-section">
-    <div class="section-label">Maintenance Schedule</div>
-    <div class="schedule-grid">
-
-      <div class="schedule-card">
-        <div class="schedule-freq">Daily / Every 2 Days</div>
-        <ul class="schedule-items">
-          <li>Lightly spritz twists with water + leave-in mix</li>
-          <li>Apply Cécred Edge Drops to hairline</li>
-          <li>Seal hairline edges with a small amount of JBCO</li>
+  <section id="schedule" style="margin-bottom:72px;">
+    <div class="sec-label">Maintenance Schedule</div>
+    <div class="sched-grid">
+      <div class="sched-card">
+        <div class="sched-freq">Daily / Every 2 Days</div>
+        <ul class="sched-items">
+          <li>Lightly spritz twists with water + leave-in mix to maintain moisture</li>
+          <li>Apply Cécred Edge Drops to hairline and edges</li>
+          <li>Seal edges with a small amount of JBCO after the drops</li>
         </ul>
       </div>
-
-      <div class="schedule-card">
-        <div class="schedule-freq">Weekly</div>
-        <ul class="schedule-items">
-          <li>Scalp oil massage with diluted tea tree oil in jojoba oil</li>
-          <li>Apply between parts directly to scalp</li>
+      <div class="sched-card">
+        <div class="sched-freq">Weekly</div>
+        <ul class="sched-items">
+          <li>Scalp oil massage: dilute tea tree oil in jojoba, apply between parts</li>
           <li>Tea tree suppresses Malassezia between Nizoral washes</li>
+          <li>Leave on 20–30 min before washing, or overnight</li>
         </ul>
       </div>
-
-      <div class="schedule-card">
-        <div class="schedule-freq">Every 2 Weeks</div>
-        <ul class="schedule-items">
-          <li>Full in-twist wash day (Nizoral → Hydrating Shampoo → Conditioner)</li>
-          <li>Re-moisturize and re-seal ends</li>
-          <li>Assess scalp — if scabs forming, use CLn Shampoo instead of Nizoral this cycle</li>
+      <div class="sched-card">
+        <div class="sched-freq">Every 2 Weeks</div>
+        <ul class="sched-items">
+          <li>Full in-twist wash: Nizoral → Hydrating Shampoo → Conditioner</li>
+          <li>Re-moisturize ends and edges after washing</li>
+          <li>If scabs returning: swap Nizoral for CLn this cycle only</li>
         </ul>
       </div>
-
-      <div class="schedule-card">
-        <div class="schedule-freq">Every 4–6 Weeks</div>
-        <ul class="schedule-items">
-          <li>Take twists down fully</li>
-          <li>Full pre-twist wash day routine (see above)</li>
-          <li>Use Clarifying Scrub to reset buildup</li>
-          <li>Deep condition with Reconstructing Mask</li>
-          <li>Reinstall fresh spam twists</li>
+      <div class="sched-card">
+        <div class="sched-freq">Every 4–6 Weeks</div>
+        <ul class="sched-items">
+          <li>Take twists down — never keep past 8 weeks total</li>
+          <li>Full pre-install wash day (all 10 steps)</li>
+          <li>Clarifying Scrub to reset all buildup</li>
+          <li>Reinstall fresh spam twists with low root tension</li>
         </ul>
       </div>
-
-      <div class="schedule-card">
-        <div class="schedule-freq">As Needed — Folliculitis Reset</div>
-        <ul class="schedule-items">
-          <li>If scabs or burning returns — swap Nizoral for CLn Shampoo</li>
-          <li>CLn targets bacteria; Nizoral targets fungus — use CLn when folliculitis flares</li>
-          <li>Do not use both in the same wash</li>
-          <li>Return to Nizoral once scalp calms</li>
+      <div class="sched-card">
+        <div class="sched-freq">As Needed — Folliculitis Reset</div>
+        <ul class="sched-items">
+          <li>Scabs or burning returns: use CLn instead of Nizoral that wash</li>
+          <li>CLn = bacteria. Nizoral = fungus. Never use both same day</li>
+          <li>Return to Nizoral once scalp calms (typically 1–2 CLn washes)</li>
         </ul>
       </div>
-
-      <div class="schedule-card">
-        <div class="schedule-freq">Quarterly Reminder</div>
-        <ul class="schedule-items">
-          <li>Max 6–8 weeks per install before taking down</li>
-          <li>Assess edge health — no tight roots</li>
-          <li>Stock check: Nizoral, K18 Leave-In, JBCO, CLn</li>
+      <div class="sched-card">
+        <div class="sched-freq">Quarterly Reminder</div>
+        <ul class="sched-items">
+          <li>6–8 week max per install before full takedown</li>
+          <li>Assess edge health — no thinning, no traction pain</li>
+          <li>Restock: Nizoral, K18 Leave-In Mask, JBCO, CLn</li>
         </ul>
       </div>
-
     </div>
   </section>
 
-  <!-- RULES -->
-  <section id="rules" class="rules-section">
-    <div class="section-label">Non-Negotiable Rules</div>
+  <section id="rules" style="margin-bottom:72px;">
+    <div class="sec-label">Non-Negotiable Rules</div>
     <div class="rules-grid">
-
       <div class="rule-card">
-        <div class="rule-num">01</div>
+        <div class="rule-n">01</div>
         <div class="rule-title">Never Skip Nizoral</div>
-        <div class="rule-body">You cannot manage seborrheic dermatitis without an antifungal. Nizoral is the evidence-backed standard. Missing it lets Malassezia rebuild faster than any moisturizing product can compensate.</div>
+        <div class="rule-body">Seborrheic dermatitis cannot be managed without an antifungal. Nizoral is the evidence-backed standard. Every missed wash lets Malassezia rebuild faster than any moisturizer compensates.</div>
       </div>
-
       <div class="rule-card">
-        <div class="rule-num">02</div>
+        <div class="rule-n">02</div>
         <div class="rule-title">Wash Every 2 Weeks Minimum</div>
-        <div class="rule-body">Your scalp cannot tolerate long gaps. Going weeks without washing is what triggers folliculitis. Protective styles do not excuse skipping wash days — they require them.</div>
+        <div class="rule-body">Your scalp cannot tolerate long stretches without washing. Protective styles do not excuse skipping wash days — they require them. The scabs returned because of the gap, not despite the style.</div>
       </div>
-
       <div class="rule-card">
-        <div class="rule-num">03</div>
+        <div class="rule-n">03</div>
         <div class="rule-title">No Tight Roots on Install</div>
-        <div class="rule-body">Traction alopecia is permanent. Your hairline is already showing oil sensitivity. Install twists with gentle tension only — if your scalp hurts after 24 hours, they're too tight.</div>
+        <div class="rule-body">Traction alopecia is permanent. Your hairline already shows oil sensitivity. Install with gentle tension only. If your scalp still hurts after 24 hours, take them out and redo them looser.</div>
       </div>
-
       <div class="rule-card">
-        <div class="rule-num">04</div>
-        <div class="rule-title">Dry Before Sleeping</div>
-        <div class="rule-body">Sleeping on damp or wet twists creates a warm, humid environment that feeds Malassezia directly. Always air dry or diffuse before bed, especially after wash days.</div>
+        <div class="rule-n">04</div>
+        <div class="rule-title">Always Dry Before Bed</div>
+        <div class="rule-body">Sleeping on wet twists creates a warm humid environment that feeds Malassezia directly. Air dry fully or diffuse on low every single time — especially after wash days.</div>
       </div>
-
       <div class="rule-card">
-        <div class="rule-num">05</div>
-        <div class="rule-title">6–8 Week Install Max</div>
-        <div class="rule-body">Beyond 8 weeks, matting and breakage outweigh the length retention benefits of protective styling. The point is to retain length — not keep the same install until the hair locks.</div>
+        <div class="rule-n">05</div>
+        <div class="rule-title">6–8 Week Max Per Install</div>
+        <div class="rule-body">Beyond 8 weeks, matting and breakage outweigh the length retention benefit. The point of the style is to retain length — not to keep the same install indefinitely at the cost of your hair.</div>
       </div>
-
       <div class="rule-card">
-        <div class="rule-num">06</div>
-        <div class="rule-title">Diet Matters for the Bumps</div>
-        <div class="rule-body">Seborrheic dermatitis and fungal acne are both worsened by high-glycemic eating. If the forehead bumps persist after consistent scalp treatment, diet is the remaining variable — not more topical products.</div>
+        <div class="rule-n">06</div>
+        <div class="rule-title">Diet Drives the Forehead</div>
+        <div class="rule-body">Seborrheic dermatitis and fungal acne are both worsened by high-glycemic eating. If forehead bumps persist after consistent scalp treatment, diet is the remaining variable — not more products.</div>
       </div>
-
     </div>
   </section>
 
   <footer>
-    <span>Type 4A/4B Regimen Reference · Seborrheic Dermatitis + Length Retention Protocol</span>
-    <span>Generated with Claude · For personal reference use only</span>
+    <span>Type 4A/4B · Seborrheic Dermatitis + Folliculitis + Length Retention Protocol</span>
+    <span>For personal reference use only</span>
   </footer>
 
 </div>
 
 <script>
+// images.weserv.nl strips referrer & handles CORS — works on any host including GitHub Pages
+function proxy(rawUrl) {
+  const clean = rawUrl.replace(/^https?:\/\//, '');
+  return `https://images.weserv.nl/?url=${encodeURIComponent(clean)}&w=400&h=400&fit=contain&bg=f4f2ed`;
+}
+function ulta(sku) {
+  return proxy(`media.ulta.com/i/ulta/${sku}`);
+}
+
 const products = [
   {
-    id: 'nizoral',
-    name: 'Anti-Dandruff Shampoo',
-    brand: 'Nizoral',
-    tag: 'scalp',
-    tagLabel: 'Scalp Treatment',
-    priority: 'must',
-    priorityLabel: 'Non-Negotiable',
-    img: 'https://i5.walmartimages.com/asr/e50a19e4-2575-4697-b2e9-1f02cf473fc4.7577a092f4ac79a4262b02e15dfb715e.png',
-    why: 'Ketoconazole 1% is the clinical gold standard for seborrheic dermatitis. Directly targets Malassezia yeast — the root cause of your oily flaking and forehead bumps. Nothing else in this list replaces it.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Apply to scalp, lather, leave 3–5 minutes, rinse thoroughly.' },
-      { icon: '📅', label: 'Active Phase', text: '2× per week until scalp calms.' },
-      { icon: '📅', label: 'Maintenance', text: 'Once every 1–2 weeks ongoing.' },
-      { icon: '⚠️', label: 'Note', text: 'Follow immediately with Cécred Hydrating Shampoo — Nizoral can be drying.' },
+    cat:'scalp', badge:'must', badgeLabel:'Non-Negotiable',
+    img: proxy('m.media-amazon.com/images/I/51eWpBSsq4L._SL1500_.jpg'),
+    tag:'Scalp Treatment', name:'Anti-Dandruff Shampoo', brand:'Nizoral',
+    why:'Ketoconazole 1% is the OTC gold standard for seborrheic dermatitis. Directly kills Malassezia yeast — the root cause of your oily flaking and forehead bumps. Nothing in this list replaces it.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply to scalp, lather, leave 3–5 min, rinse. Then follow immediately with Hydrating Shampoo.'},
+      {icon:'📅',lbl:'Active Phase',txt:'Use 2× per week until scalp fully calms down.'},
+      {icon:'📅',lbl:'Maintenance',txt:'Once every 1–2 weeks ongoing, indefinitely.'},
+      {icon:'⚠️',lbl:'Important',txt:'Always follow with Cécred Hydrating Shampoo — Nizoral alone is drying.'},
     ]
   },
   {
-    id: 'cln',
-    name: 'Shampoo',
-    brand: 'CLn',
-    tag: 'scalp',
-    tagLabel: 'Scalp Treatment',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://clnwash.com/cdn/shop/files/CLn_2in1_Wash_Shampoo_8oz_Front_New_1.png?v=1706631736&width=1080',
-    why: 'Sodium hypochlorite base makes it genuinely antibacterial. Your reset product for folliculitis flare-ups. Works alongside Nizoral — not in place of it. Targets bacteria; Nizoral targets fungus.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Use as shampoo, leave 1–2 minutes on scalp, rinse.' },
-      { icon: '📅', label: 'When', text: 'Any time scabs or burning sensation returns at the nape.' },
-      { icon: '🔄', label: 'Rotation', text: 'Use instead of Nizoral that wash — not both in the same session.' },
-      { icon: '📅', label: 'Maintenance', text: 'Quarterly reset even when scalp is calm.' },
+    cat:'scalp', badge:'core', badgeLabel:'Core',
+    img: proxy('www.clnwash.com/cdn/shop/files/cln-shampoo-shop-all-products-cln-skin-care-8-fl-oz-full-size-320204.jpg'),
+    tag:'Scalp Treatment', name:'Shampoo', brand:'CLn',
+    why:'Sodium hypochlorite base makes it genuinely antibacterial. Your reset tool specifically for folliculitis flare-ups. Targets bacteria; Nizoral targets fungus. Use one or the other per wash, never both together.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply to scalp, lather, leave 1–2 min, rinse well.'},
+      {icon:'🔔',lbl:'When',txt:'Any time scabs or burning sensation returns at the nape area.'},
+      {icon:'🔄',lbl:'Rotation',txt:'Use instead of Nizoral that wash cycle. Not both in the same session.'},
+      {icon:'📅',lbl:'Maintenance',txt:'Quarterly reset even when your scalp is calm and clear.'},
     ]
   },
   {
-    id: 'k18mask',
-    name: 'Leave-In Molecular Repair Mask',
-    brand: 'K18',
-    tag: 'repair',
-    tagLabel: 'Repair',
-    priority: 'must',
-    priorityLabel: 'Non-Negotiable',
-    img: 'https://www.k18hair.com/cdn/shop/files/K18_LIRM_50mL_front_updated.jpg?v=1711564983&width=600',
-    why: 'Contains the patented K18 peptide — peer-reviewed for reconnecting cleaved disulfide bonds in the hair cortex. Actual structural repair, not surface coating. Critical for type 4 hair that uses heat.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Apply to damp hair after every wash. Section by section. Do NOT rinse out.' },
-      { icon: '📏', label: 'Amount', text: 'Less than you think — a pea-sized amount per section.' },
-      { icon: '📅', label: 'When', text: 'Every wash day, after conditioner, before any heat or styling.' },
-      { icon: '⚠️', label: 'Note', text: 'This is different from the K18 Oil. Both are recommended.' },
+    cat:'repair', badge:'must', badgeLabel:'Non-Negotiable',
+    img: proxy('www.k18hair.com/cdn/shop/files/K18_LIRM_50mL_front_updated.jpg'),
+    tag:'Repair', name:'Leave-In Molecular Repair Mask', brand:'K18',
+    why:'Contains the patented K18Peptide — peer-reviewed for reconnecting cleaved polypeptide chains in the cortex. Actual structural repair, not surface coating. Critical for type 4 hair that sees heat and long-term protective styling.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply dime-sized amounts to damp sections after every wash. Do NOT rinse out.'},
+      {icon:'📏',lbl:'Amount',txt:'Less than you think — a dime per section. It is highly concentrated.'},
+      {icon:'📅',lbl:'When',txt:'Every wash day, after conditioner, before any heat or styling product.'},
+      {icon:'⚠️',lbl:'Note',txt:'This is different from the K18 Oil. Both are in this regimen for different purposes.'},
     ]
   },
   {
-    id: 'k18oil',
-    name: 'Molecular Repair Hair Oil',
-    brand: 'K18',
-    tag: 'repair',
-    tagLabel: 'Repair',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://www.k18hair.com/cdn/shop/files/K18_MolecularRepairHairOil_30mL_front_updated.jpg?v=1711564894&width=600',
-    why: 'Lightweight heat protectant and strengthening oil. Safe for type 4 hair — won\'t weigh it down. Adds slip for detangling and thermal protection before blow-drying.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Apply to damp or dry hair before heat. Distribute evenly.' },
-      { icon: '🔥', label: 'Heat Use', text: 'Always use before any blow-dry or flat iron session.' },
-      { icon: '✨', label: 'Also', text: 'Can be used on dry hair for shine and frizz control between wash days.' },
+    cat:'repair', badge:'core', badgeLabel:'Core',
+    img: proxy('www.k18hair.com/cdn/shop/files/K18_MolecularRepairHairOil_30mL_front_updated.jpg'),
+    tag:'Repair', name:'Molecular Repair Hair Oil', brand:'K18',
+    why:'Lightweight heat protectant and strengthening oil. Light enough for type 4 hair. Provides thermal protection before blow-drying plus extra slip for detangling stretched hair without weighing it down.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply evenly through damp or dry hair before any heat styling.'},
+      {icon:'🔥',lbl:'Heat Use',txt:'Always apply before blow-drying or flat ironing. Non-negotiable step with heat.'},
+      {icon:'✨',lbl:'Also',txt:'Can be used on dry twists for frizz control and shine between wash days.'},
     ]
   },
   {
-    id: 'cecred-shampoo-cond',
-    name: 'Hydrating Shampoo + Conditioner',
-    brand: 'Cécred',
-    tag: 'moisture',
-    tagLabel: 'Moisture',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://cecred.com/cdn/shop/files/CECRED_Hydrating_Duo_2400x2400.jpg?v=1702588892&width=600',
-    why: 'Well-formulated moisture duo you\'re already using. The shampoo is gentle enough to follow Nizoral without over-stripping. Keep both in your routine.',
-    usage: [
-      { icon: '🧴', label: 'Shampoo', text: 'Use after Nizoral on every wash day. Adds back moisture after the antifungal step.' },
-      { icon: '🧴', label: 'Conditioner', text: 'Rinse-out after the Reconstructing Mask. Can also use mid-twist on bi-weekly wash days.' },
-      { icon: '📅', label: 'Frequency', text: 'Every wash — full install days and bi-weekly in-twist washes.' },
+    cat:'moisture', badge:'core', badgeLabel:'Core',
+    img: ulta('2636748'),
+    tag:'Moisture', name:'Hydrating Shampoo', brand:'Cécred',
+    why:'Well-formulated and gentle enough to follow Nizoral without re-stripping the scalp. This is your standard follow-up shampoo on every single wash day — always used after the antifungal step.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply after Nizoral (or CLn), lather, rinse. Repeat if needed.'},
+      {icon:'📅',lbl:'Frequency',txt:'Every wash day — both full install days and bi-weekly in-twist washes.'},
+      {icon:'💧',lbl:'Purpose',txt:'Restores moisture stripped by the antifungal step. Acts as your regular shampoo.'},
     ]
   },
   {
-    id: 'cecred-mask',
-    name: 'Reconstructing Treatment Mask',
-    brand: 'Cécred',
-    tag: 'repair',
-    tagLabel: 'Repair',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://cecred.com/cdn/shop/files/CECRED_ReconstructingTreatmentMask_2400x2400.jpg?v=1702588866&width=600',
-    why: 'Handles the protein side of the protein-moisture balance. Deep conditioning prevents breakage during long-term protective styling. Use with a heat cap for maximum penetration.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Apply after shampooing, cover with heat cap, wait 20–30 min, rinse.' },
-      { icon: '📅', label: 'Frequency', text: 'Every full install wash day (every 4–6 weeks).' },
-      { icon: '🔥', label: 'Heat Cap', text: 'Use one if you have it — heat opens the cuticle and improves absorption.' },
+    cat:'moisture', badge:'core', badgeLabel:'Core',
+    img: ulta('2636913'),
+    tag:'Moisture', name:'Hydrating Conditioner', brand:'Cécred',
+    why:'Rinse-out conditioner that seals and softens after the Reconstructing Mask. Also your go-to on bi-weekly in-twist wash days when you are not doing a full deep conditioning treatment.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply after Reconstructing Mask, leave 3–5 min, rinse thoroughly.'},
+      {icon:'📅',lbl:'Frequency',txt:'Every wash — both install days and bi-weekly in-twist washes.'},
+      {icon:'💡',lbl:'Tip',txt:'Hair feels stiff after the Mask? That is the protein working. This conditioner fixes it.'},
     ]
   },
   {
-    id: 'cecred-scrub',
-    name: 'Clarifying Shampoo & Scalp Scrub',
-    brand: 'Cécred',
-    tag: 'clarify',
-    tagLabel: 'Clarify',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://cecred.com/cdn/shop/files/CECRED_ClarifyingScalpScrub_2400x2400.jpg?v=1702588865&width=600',
-    why: 'Removes silicone and product buildup that can block follicles and worsen seborrheic dermatitis. Not for regular use — a targeted reset tool.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Massage into scalp on wet hair, scrub gently, rinse well.' },
-      { icon: '📅', label: 'When', text: 'Before every new twist install (roughly once a month).' },
-      { icon: '⚠️', label: 'Warning', text: 'Do not use more than once a month — over-clarifying strips the scalp and worsens oil production.' },
+    cat:'repair', badge:'core', badgeLabel:'Core',
+    img: ulta('2636885'),
+    tag:'Repair', name:'Reconstructing Treatment Mask', brand:'Cécred',
+    why:'Handles the protein side of protein-moisture balance. Prevents breakage during long-term protective styling. This is a treatment, not a conditioner — always follow it with the Hydrating Conditioner afterward.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Apply to wet sections, cover with heat cap, leave 20–30 min, rinse.'},
+      {icon:'📅',lbl:'Frequency',txt:'Every full install wash day (every 4–6 weeks). Not on bi-weekly washes.'},
+      {icon:'🔥',lbl:'Heat Cap',txt:'Use one — heat opens the cuticle for dramatically better absorption.'},
     ]
   },
   {
-    id: 'cecred-drops',
-    name: 'Restoring Hair & Edge Drops',
-    brand: 'Cécred',
-    tag: 'moisture',
-    tagLabel: 'Moisture',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://cecred.com/cdn/shop/files/CECRED_RestoringHairEdgeDrops_2400x2400.jpg?v=1702588873&width=600',
-    why: 'You\'ve barely used this — start. Edges are already at risk from oil buildup and potential tension. This keeps them moisturized and prevents thinning during long-term protective styling.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Apply 2–3 drops to edges and any exposed hair sections.' },
-      { icon: '📅', label: 'Frequency', text: 'Daily or every other day while twists are in.' },
-      { icon: '📍', label: 'Where', text: 'Hairline edges, temples, and nape — wherever hair is most exposed and vulnerable.' },
+    cat:'clarify', badge:'core', badgeLabel:'Core',
+    img: ulta('2636884'),
+    tag:'Clarify', name:'Clarifying Shampoo & Scalp Scrub', brand:'Cécred',
+    why:'Removes silicone and product buildup that blocks follicles and worsens seborrheic dermatitis. Not a regular shampoo — a monthly reset before fresh installs only. Overusing it strips the scalp and worsens oil.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Massage into wet scalp, scrub gently, work through hair, rinse well.'},
+      {icon:'📅',lbl:'When',txt:'Before every new twist install only (roughly once a month max).'},
+      {icon:'⚠️',lbl:'Warning',txt:'Do not use more than once a month — over-clarifying worsens oil production.'},
     ]
   },
   {
-    id: 'jbco',
-    name: 'Jamaican Black Castor Oil',
-    brand: 'JBCO',
-    tag: 'moisture',
-    tagLabel: 'Moisture',
-    priority: 'core',
-    priorityLabel: 'Core',
-    img: 'https://m.media-amazon.com/images/I/71X2r9+0maL._SL1500_.jpg',
-    why: 'Seals in moisture at the ends and edges. Some evidence for promoting thicker, stronger growth when applied to edges consistently. Keep it off the scalp if seborrheic dermatitis is active — heavy oils can feed Malassezia.',
-    usage: [
-      { icon: '🧴', label: 'How', text: 'Warm a small amount between fingers, apply to ends and mid-lengths.' },
-      { icon: '📍', label: 'Scalp Rule', text: 'Do NOT apply to scalp when SD is active. Use on ends and edges only.' },
-      { icon: '📅', label: 'Frequency', text: 'After every wash day to seal. Small amount on edges every few days.' },
-      { icon: '✨', label: 'Tip', text: 'Use as the final step of your LOC method — after leave-in and before twisting.' },
+    cat:'moisture', badge:'core', badgeLabel:'Core',
+    img: ulta('2636889'),
+    tag:'Moisture', name:'Restoring Hair & Edge Drops', brand:'Cécred',
+    why:'You have barely used this — start now. Edges are at risk from oil buildup and potential traction. Five key peptides clinically shown to visibly improve hair density up to 1.5x. Daily use on edges is the protocol.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Fill dropper, apply directly to edges, hairline, and scalp. Massage with fingertips.'},
+      {icon:'📅',lbl:'Frequency',txt:'Daily or every other day while twists are in. Consistent use is required for results.'},
+      {icon:'📍',lbl:'Where',txt:'Hairline edges, temples, nape — wherever hair is most exposed and vulnerable.'},
+    ]
+  },
+  {
+    cat:'moisture', badge:'core', badgeLabel:'Core',
+    img: proxy('m.media-amazon.com/images/I/71X2r9+0maL._SL1500_.jpg'),
+    tag:'Moisture', name:'Jamaican Black Castor Oil', brand:'JBCO',
+    why:'Seals in moisture at ends and edges. Some evidence supports thicker growth when applied to edges consistently. Keep off the scalp when SD is active — heavy oils can feed Malassezia on an irritated scalp.',
+    usage:[
+      {icon:'🧴',lbl:'How',txt:'Warm a small amount between fingers, apply to ends and mid-lengths.'},
+      {icon:'📍',lbl:'Scalp Rule',txt:'Do NOT apply to scalp when seborrheic dermatitis is active. Ends and edges only.'},
+      {icon:'📅',lbl:'Frequency',txt:'After every wash to seal ends. Small amount on edges every few days.'},
+      {icon:'✨',lbl:'Tip',txt:'Final step before installing twists — after leave-in and K18 Mask are already applied.'},
     ]
   },
 ];
 
-function buildCard(p) {
+function makeCard(p) {
+  const rows = p.usage.map(u => `
+    <li>
+      <span class="usage-icon">${u.icon}</span>
+      <span><span class="usage-lbl">${u.lbl}</span>${u.txt}</span>
+    </li>`).join('');
   return `
-    <div class="product-card" data-category="${p.tag}">
-      <span class="card-priority ${p.priority === 'must' ? 'must' : p.priority === 'optional' ? 'optional' : ''}">${p.priorityLabel}</span>
-      <div class="product-img-wrap">
-        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.opacity='0.2'; this.alt='Image unavailable';" />
+    <div class="card">
+      <span class="badge badge-${p.badge}">${p.badgeLabel}</span>
+      <div class="img-box">
+        <img src="${p.img}" alt="${p.name}" loading="lazy"
+             onerror="this.style.opacity='0.12'; this.removeAttribute('onerror');" />
       </div>
-      <span class="product-tag tag-${p.tag}">${p.tagLabel}</span>
-      <div class="product-name">${p.name}</div>
-      <div class="product-brand">${p.brand}</div>
-      <p class="product-why">${p.why}</p>
-      <ul class="usage-list">
-        ${p.usage.map(u => `
-          <li>
-            <span class="usage-icon">${u.icon}</span>
-            <span><span class="usage-label">${u.label}</span>${u.text}</span>
-          </li>
-        `).join('')}
-      </ul>
-    </div>
-  `;
+      <span class="tag tag-${p.cat}">${p.tag}</span>
+      <div class="card-name">${p.name}</div>
+      <div class="card-brand">${p.brand}</div>
+      <p class="card-why">${p.why}</p>
+      <ul class="usage">${rows}</ul>
+    </div>`;
 }
 
-// Render all
-document.getElementById('products-grid').innerHTML = products.map(buildCard).join('');
-
-// Render filtered
+document.getElementById('grid-all').innerHTML = products.map(makeCard).join('');
 ['scalp','repair','moisture','clarify'].forEach(cat => {
-  document.getElementById(`products-grid-${cat}`).innerHTML =
-    products.filter(p => p.tag === cat).map(buildCard).join('');
+  document.getElementById('grid-'+cat).innerHTML =
+    products.filter(p => p.cat===cat).map(makeCard).join('');
 });
 
-function switchTab(e, tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  e.target.classList.add('active');
-  document.getElementById(`tab-${tab}`).classList.add('active');
-}
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    e.preventDefault();
-    const el = document.querySelector(a.getAttribute('href'));
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
   });
 });
-</script>
 
+document.querySelectorAll('a[href^="#"]').forEach(a =>
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth',block:'start'});
+  })
+);
+</script>
 </body>
 </html>
